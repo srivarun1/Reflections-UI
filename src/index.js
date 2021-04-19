@@ -1,17 +1,36 @@
+/**
+  This CodeSandbox has been automatically generated using
+  `codesandboxer`. If you're curious how that happened, you can
+  check out our docs here: https://github.com/codesandbox/codesandboxer
+
+  If you experience any struggles with this sandbox, please raise an issue
+  on github. :)
+*/
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import LoadScreen from './Components/LoadScreen';
+import LoginPage from './Components/LoginComponent';
+import SignUp from './Components/SignUp';
+import Activity from './Components/Activity';
+
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  <Routes />,
+document.getElementById('root')
 );
 
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
+function Routes()
+{
+  return (<Router><Switch>
+    <Route exact path="/"><App /></Route>
+    <Route exact path="/Login"><LoginPage /></Route>
+    <Route exact path="/SignUp"><SignUp /></Route>
+    <Route exact path="/Activity"><Activity /></Route></Switch></Router>);
+}
