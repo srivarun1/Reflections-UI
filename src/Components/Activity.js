@@ -40,7 +40,6 @@ export function InputBox()
             /*
                 Send to server. Get back id of activity. push it to Entries
             */
-                return () => { console.log("componentWillUnmount effect"); }
             }
           });
       });
