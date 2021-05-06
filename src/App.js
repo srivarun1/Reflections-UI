@@ -52,6 +52,10 @@ export default class App extends Component{
       {
         return (<Redirect to = "/Login" />);
       }
+      else
+      {
+        return (<Redirect to = "/Activity" />);
+      }
         
         
       
