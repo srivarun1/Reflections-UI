@@ -3,20 +3,47 @@ import $ from 'jquery';
 import {
     BrowserRouter as Router,
     Switch,
+    Redirect,
     Route,
     Link
   } from "react-router-dom";
+
+  import Cookies from 'js-cookie'
+
 
 export default class SignUp extends Component
 {
     constructor(props)
     {
         super(props);
+        this.state = {newSignUp : "pending"}; 
+    }
+    componentDidMount()
+    {
+        isAuthenticatedUser().then((result) =>
+          {
+            if(result == false)
+            {
+              this.setState({newSignUp: "failed"});
+             
+            }
+            else if(result == true)
+            {
+              this.setState({newSignUp: "Passed"});
+            }
+          }
+        );
     }
     render(){
-        return(<div> <Quotes /><div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '70vh'}}><SignUpBox /></div> </div>);
+        if(this.state.newSignUp == "Passed")
+        {
+            return (<Redirect to = "/Activity" />);
+        }
+        else
+        {   
+            return(<div> <Quotes /><div style={{display: 'flex',  justifyContent:'center', alignItems:'center', height: '70vh'}}><SignUpBox /></div> </div>);
+        }
     }
-
 }
 
 
@@ -120,6 +147,55 @@ export function TextBox(props)
         error: function(e)
         {
             reject(false);
+        }
+        });
+    });
+}
+
+function isAuthenticatedUser()
+{
+      return new Promise(function(resolve,reject){
+        var showLoginPage = false;
+        if(Cookies.get('reflections') == null)
+        {
+            resolve(false);
+        }
+        if(!showLoginPage)
+        {
+            authenticateCookie(Cookies.get('reflections')).then(
+                function(result)
+                {
+                    if(result.toString().trim() == ("Invalid Credential"))
+                    {
+                          resolve(false);
+                    }
+                    else 
+                    {
+                        resolve(true);
+                    }
+                }
+            )    
+        }
+      });
+}
+
+function authenticateCookie(cookieId)
+{
+    return new Promise(function(resolve,reject){
+        $.ajax({
+            url : 'http://localhost:8080/Access/ValidateCookie',
+            type : 'POST',
+            async: false,
+            data : {
+                'cookie' : cookieId,
+            },
+            success: function(response) 
+            {
+                resolve(response);
+            },
+        error: function(e)
+        {
+            reject(e);
         }
         });
     });
